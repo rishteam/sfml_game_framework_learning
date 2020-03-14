@@ -1,0 +1,9 @@
+Debug/
+Release/
+*.dll
+*.vcxproj
+*.filters
+*.user
+*.sln
+build/
+.DS_Store
