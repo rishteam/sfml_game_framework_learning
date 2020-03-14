@@ -1,10 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
 
-#Enable debug symbols
-# if (NOT CMAKE_BUILD_TYPE)
-#     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose debug or release" FORCE)
-# endif()
-
 project(SFML_Framework)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -24,7 +19,9 @@ file(GLOB_RECURSE SOURCES Source/*.cpp)
 add_executable(framework ${SOURCES})
 
 # Add libraries
-# set(SFML_STATIC_LIBRARIES TRUE)
+if(WIN32)
+   set(SFML_STATIC_LIBRARIES TRUE)
+endif(WIN32)
 find_package(SFML 2.5 REQUIRED graphics network audio window system)
 target_link_libraries(framework sfml-graphics sfml-audio)
 
@@ -32,3 +29,10 @@ target_link_libraries(framework sfml-graphics sfml-audio)
 
 #Copy resources
 file(COPY ${CMAKE_SOURCE_DIR}/res DESTINATION ${CMAKE_BINARY_DIR})
+if(WIN32)
+   # Copy DLLs
+   file(GLOB_RECURSE BINARY_DEP_DLLS
+    "${CMAKE_SOURCE_DIR}/bin/*.dll"
+   )
+   file(COPY ${BINARY_DEP_DLLS} DESTINATION ${CMAKE_BINARY_DIR})
+endif(WIN32)
